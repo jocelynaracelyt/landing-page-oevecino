@@ -249,21 +249,3 @@ Algunas cosas no son exactamente iguales a Figma. Estas son las principales y po
 
 Figma tampoco tiene todos los datos de algunos incidentes (reportante, descripción u horas de
 INC-0247 a INC-0251). Donde falta algo, se muestra «Sin informar».
-
----
-
-## Pendientes
-
-- Diseñar en Figma lo que falta para tres historias: registrar un incidente desde la web
-  (HU-040), reasignar una unidad sin señal (HU-011) y la lista de notificaciones (HU-061).
-- Agregar a Figma lo nuevo: Emergencia médica, los resultados del buscador y el aviso flotante.
-- La paginación de las tablas es solo visual, porque todos los registros caben en una página.
-
----
-
-## Publicación
-
-El sitio se publica solo desde este repositorio con GitHub Pages. Cada vez que se sube algo a la
-rama `main`, la acción «Deploy OeVecino» (`.github/workflows/deploy.yml`) copia los archivos y
-agrega un `index.html` que redirige a `pages/index.html`, así que la dirección principal también
-funciona. Tarda uno o dos minutos; el avance se ve en la pestaña **Actions**.
