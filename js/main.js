@@ -33,7 +33,7 @@
 "use strict";
 
 /* 1. Configuración y constantes ----------------------------------------- */
-const STORAGE_KEY = "oevecino-demo-v2";
+const STORAGE_KEY = "oevecino-demo-v3";
 const SESSION_KEY = "oevecino-sesion";
 const ICONS = "../assets/icons/";
 const IMAGES = "../assets/images/";
@@ -223,7 +223,7 @@ const DEMO_DATA = {
             descripcion: "", foto: null,
             reportante: { nombre: "Carlos Paredes" }, validaciones: null,
             estadoCoord: null, estadoSer: "sin-asignar", unidad: null,
-            fichaMedica: { nombre: "Carlos Paredes", sangre: "", alergias: "", enfermedades: "", seguro: "" },
+            fichaMedica: { nombre: "Carlos Paredes", sangre: "O+", alergias: "Penicilina", enfermedades: "Hipertensión arterial", seguro: "EsSalud" },
             mapaOps: [330, 175],
             cronologiaSer: [
                 { hora: "08:32", titulo: "Emergencia médica recibida · Ficha médica disponible", detalle: "Carlos Paredes solicitó atención médica desde su ubicación.", responsable: "Carlos Paredes · Origen: App del vecino" }
@@ -384,10 +384,10 @@ const DEMO_DATA = {
         hora: "08:31", origen: "App del vecino",
         descripcion: "", foto: null, reportante: null, validaciones: null,
         estadoCoord: null, estadoSer: "sin-asignar", unidad: null,
-        fichaMedica: { nombre: "", sangre: "", alergias: "", enfermedades: "", seguro: "" },
+        fichaMedica: { autorizada: false },
         mapaOps: [520, 60],
         cronologiaSer: [
-            { hora: "08:31", titulo: "SOS recibido · Ficha médica disponible", detalle: "Solicitud de apoyo enviada desde la app del vecino.", responsable: "Vecino · Origen: App del vecino" }
+            { hora: "08:31", titulo: "SOS recibido · Ficha médica no autorizada", detalle: "Solicitud de apoyo enviada desde la app del vecino.", responsable: "Vecino · Origen: App del vecino" }
         ]
     },
 
@@ -496,6 +496,13 @@ function loadState() {
         const guardado = localStorage.getItem(STORAGE_KEY);
         state = guardado ? JSON.parse(guardado) : cloneData(DEMO_DATA);
     } catch (error) {
+        state = cloneData(DEMO_DATA);
+    }
+    // La demo simula el turno mañana (hasta las 14:00). Si el estado guardado ya
+    // pasó ese horario (por ejemplo, se abrió al día siguiente), empieza un turno nuevo
+    // para que las horas sigan en orden.
+    const FIN_TURNO = 14 * 60;
+    if (state.relojInicio && HORA_INICIO_DEMO + (Date.now() - state.relojInicio) / 60000 >= FIN_TURNO) {
         state = cloneData(DEMO_DATA);
     }
     if (!state.relojInicio) {
@@ -978,7 +985,8 @@ function buildSearchIndex(rol) {
     if (rol === "coordinador") {
         coordIncidents().forEach((inc) => items.push({
             grupo: "Incidentes", titulo: incidentTitle(inc), detalle: `${ubicacionCoord(inc)} · ${COORD_STATUS[coordStatusKey(inc)].texto}`,
-            href: `coordinador-incidente.html?id=${inc.id}`, texto: `${incidentTitle(inc)} ${ubicacionCoord(inc)} ${inc.reportante?.nombre || ""}`
+            href: `coordinador-incidente.html?id=${inc.id}`, texto: `${incidentTitle(inc)} ${ubicacionCoord(inc)} ${inc.reportante?.nombre || ""}`,
+            personas: [["Reportado por", inc.reportante?.nombre]]
         }));
         state.publicaciones.forEach((pub) => items.push({
             grupo: "Publicaciones", titulo: pub.titulo, detalle: `${pub.autor} · ${pub.sector} · ${PUB_STATUS[pub.estado].texto}`,
@@ -990,38 +998,81 @@ function buildSearchIndex(rol) {
         }));
         state.vecinos.forEach((vec) => items.push({
             grupo: "Vecinos", titulo: vec.nombre, detalle: `Santa Aurora · ${vec.sector}`,
-            href: `coordinador-vecino.html?id=${vec.id}`, texto: `${vec.nombre} ${vec.sector}`
+            href: `coordinador-vecino.html?id=${vec.id}`, texto: `${vec.nombre} ${vec.sector} vecino vecinos vecinal directorio`
         }));
     } else {
         state.incidentes.filter(isSerVisible).forEach((inc) => items.push({
             grupo: "Incidentes", titulo: serTitle(inc), detalle: `${ubicacionSer(inc)} · ${SER_STATUS[inc.estadoSer].texto}`,
-            href: `serenazgo-seguimiento.html?id=${inc.id}`, texto: `${incidentTitle(inc)} ${ubicacionSer(inc)} ${inc.reportante?.nombre || ""} ${inc.unidad || ""}`
+            href: `serenazgo-seguimiento.html?id=${inc.id}`, texto: `${incidentTitle(inc)} ${ubicacionSer(inc)} ${inc.reportante?.nombre || ""} ${inc.unidad || ""}`,
+            personas: [["Reportado por", inc.reportante?.nombre]]
         }));
         state.unidades.forEach((u) => items.push({
             grupo: "Unidades", titulo: `${u.id} · ${u.tipo}`, detalle: `${u.placa} · ${UNIT_STATUS[u.estado].texto}`,
-            href: `serenazgo-unidad.html?id=${u.id}`, texto: `${u.id} ${u.placa} ${u.jefe} ${u.conductor}`
+            href: `serenazgo-unidad.html?id=${u.id}`, texto: `${u.id} ${u.placa} ${u.jefe} ${u.conductor}`,
+            personas: [["Jefe:", u.jefe], ["Conductor:", u.conductor]]
         }));
     }
     return items;
 }
 
+/* Cada palabra buscada debe coincidir con el inicio de una palabra del texto
+   («rosa» encuentra «Rosa Medina», pero no «Barrosa»). */
+function searchWords(texto) {
+    return normalize(texto).split(/[^a-z0-9ñ]+/).filter(Boolean);
+}
+
+function matchesWords(palabras, texto) {
+    const delTexto = searchWords(texto);
+    return palabras.every((p) => delTexto.some((w) => w.startsWith(p)));
+}
+
 function searchPlatform(rol, consulta) {
-    const palabras = normalize(consulta).split(/\s+/).filter(Boolean);
+    const palabras = searchWords(consulta);
     if (palabras.length === 0) {
         return [];
     }
     const grupos = {};
+    const ordenGrupos = [];
     buildSearchIndex(rol).forEach((item) => {
-        const texto = normalize(item.texto);
-        if (palabras.every((p) => texto.includes(p))) {
-            grupos[item.grupo] = grupos[item.grupo] || [];
-            if (grupos[item.grupo].length < 4) {
-                grupos[item.grupo].push(item);
+        if (!matchesWords(palabras, item.texto)) {
+            return;
+        }
+        // Relevancia: 3 = el título empieza con lo buscado; 2 = todas las palabras están en el título;
+        // 1 = la coincidencia está en otro dato (reportante, autor, contenido…)
+        const titulo = normalize(item.titulo);
+        const puntaje = titulo.startsWith(palabras.join(" ")) ? 3 : matchesWords(palabras, item.titulo) ? 2 : 1;
+        let detalle = item.detalle;
+        if (puntaje === 1 && item.personas) {
+            // Explica por qué aparece el resultado cuando lo buscado es una persona
+            const persona = item.personas.find(([, nombre]) => nombre && matchesWords(palabras, nombre));
+            if (persona && !normalize(detalle).includes(normalize(persona[1]))) {
+                detalle = `${detalle} · ${persona[0]} ${persona[1]}`;
             }
         }
+        if (!grupos[item.grupo]) {
+            grupos[item.grupo] = [];
+            ordenGrupos.push(item.grupo);
+        }
+        grupos[item.grupo].push({ ...item, detalle, puntaje });
     });
-    return Object.entries(grupos);
+    return ordenGrupos
+        .map((grupo) => {
+            const items = grupos[grupo].sort((a, b) => b.puntaje - a.puntaje);
+            return [grupo, items.slice(0, 4), items[0].puntaje, items.length];
+        })
+        // Los grupos con coincidencias en el título van primero (buscar «Rosa Medina» muestra primero a la vecina)
+        .sort((a, b) => b[2] - a[2])
+        .map(([grupo, items, , total]) => [grupo, items, total]);
 }
+
+/* Página donde se ven todos los resultados de un grupo cuando hay más de 4. */
+const SEARCH_GROUP_PAGES = {
+    Incidentes: { coordinador: "coordinador-incidentes.html", serenazgo: "serenazgo-incidentes.html" },
+    Publicaciones: { coordinador: "coordinador-moderacion.html" },
+    Comunicados: { coordinador: "coordinador-comunicados.html" },
+    Vecinos: { coordinador: "coordinador-directorio.html" },
+    Unidades: { serenazgo: "serenazgo-unidades.html" }
+};
 
 function setupGlobalSearch(rol) {
     const formulario = qs(".topbar-search");
@@ -1063,15 +1114,22 @@ function setupGlobalSearch(rol) {
         let n = 0;
         panel.innerHTML = grupos.length === 0
             ? `<p class="search-empty">Sin resultados para «${escapeHtml(consulta)}» en la plataforma.</p>`
-            : grupos.map(([grupo, items]) => `
+            : grupos.map(([grupo, items, total]) => {
+                const pagina = SEARCH_GROUP_PAGES[grupo]?.[rol];
+                const verTodos = total > items.length && pagina ? `
+                        <a class="search-option search-option--more" role="option" id="search-option-${n++}" href="${pagina}">
+                            <strong>Ver los ${total} resultados de ${grupo.toLowerCase()}</strong>
+                        </a>` : "";
+                return `
                 <div role="group" aria-label="${grupo}">
                     <p class="search-group" aria-hidden="true">${grupo}</p>
                     ${items.map((item) => `
                         <a class="search-option" role="option" id="search-option-${n++}" href="${item.href}">
                             <strong>${escapeHtml(item.titulo)}</strong>
                             <span>${escapeHtml(item.detalle)}</span>
-                        </a>`).join("")}
-                </div>`).join("");
+                        </a>`).join("")}${verTodos}
+                </div>`;
+            }).join("");
         panel.hidden = false;
         entrada.setAttribute("aria-expanded", "true");
         activo = -1;
@@ -2208,7 +2266,17 @@ function initDirectory() {
 }
 
 function initNeighborProfile() {
-    const vecino = state.vecinos.find((v) => v.id === getParam("id")) || state.vecinos.find((v) => v.id === "lucia-vargas");
+    const id = getParam("id") || "lucia-vargas";
+    const vecino = state.vecinos.find((v) => v.id === id);
+    if (!vecino) {
+        qs(".profile-layout").outerHTML = `<section class="card">${emptyStateHtml("Vecino no encontrado", "El perfil solicitado no existe en el directorio de Santa Aurora.", "Volver al directorio", "back-directory")}</section>`;
+        document.addEventListener("click", (evento) => {
+            if (evento.target.closest("[data-action='back-directory']")) {
+                window.location.href = "coordinador-directorio.html";
+            }
+        });
+        return;
+    }
     document.title = `${vecino.nombre} · Perfil vecinal · OeVecino`;
     setText("[data-neighbor='initials']", vecino.iniciales);
     setText("[data-neighbor='name']", vecino.nombre);
@@ -2317,7 +2385,7 @@ function medicalDialogHtml() {
                     <p id="medical-subtitle" class="modal-subtitle-small"></p>
                 </div>
                 <div class="modal-body modal-body--compact" id="medical-data"></div>
-                <p class="note note--small">Los campos sin datos se muestran como «Sin informar».</p>
+                <p class="note note--small" id="medical-note">Los campos sin datos se muestran como «Sin informar».</p>
                 <div class="modal-actions modal-actions--single">
                     <button type="button" class="btn btn--primary" data-close-dialog>Cerrar</button>
                 </div>
@@ -2332,6 +2400,13 @@ function openMedicalRecord(inc) {
     const f = inc.fichaMedica;
     const valor = (dato) => escapeHtml(dato || "Sin informar");
     setText("#medical-subtitle", `${inc.id} · ${CATEGORIES[inc.categoria].nombre} · Información de solo lectura`);
+    // HU-003: si el vecino no autorizó compartir la ficha, no se muestra ningún dato médico
+    qs("#medical-note").hidden = f.autorizada === false;
+    if (f.autorizada === false) {
+        qs("#medical-data").innerHTML = bannerHtml("info", "Ficha médica no autorizada", "El vecino no autorizó compartir su ficha médica durante emergencias. Coordina la atención con la información del reporte.");
+        openDialog(qs("#medical-dialog"));
+        return;
+    }
     qs("#medical-data").innerHTML = `
         <div class="data-item"><span class="data-label">Nombre completo</span><span class="data-value data-value--name">${valor(f.nombre)}</span></div>
         <div class="data-item"><span class="data-label">Tipo de sangre</span><span class="data-value">${valor(f.sangre)}</span></div>
@@ -2354,7 +2429,7 @@ function showIncomingToast(inc) {
             ${icon("info.svg")}
             <div class="banner-content">
                 <p class="banner-title">Nuevo incidente · ${inc.id}</p>
-                <p class="banner-text">${escapeHtml(CATEGORIES[inc.categoria].nombre)} recibido a las ${inc.hora}.${enBandeja ? " Ya aparece al inicio de la bandeja." : ""}</p>
+                <p class="banner-text">${escapeHtml(CATEGORIES[inc.categoria].nombre)} · ${escapeHtml(ubicacionSer(inc))} · Recibido a las ${inc.hora}.${enBandeja ? " Ya aparece al inicio de la bandeja." : ""}</p>
                 <a class="btn btn--primary btn--small" href="serenazgo-seguimiento.html?id=${inc.id}">Ver nuevo incidente</a>
             </div>
             <button type="button" class="toast-close" aria-label="Cerrar aviso">${icon("cerrar.svg")}</button>
@@ -2912,6 +2987,10 @@ function initUnits() {
     setText("[data-stat='en-ruta']", cuenta("en-ruta"));
     setText("[data-stat='en-atencion']", cuenta("en-atencion"));
     setText("[data-stat='fuera-servicio']", cuenta("fuera-servicio"));
+    // HU-052: se destaca cuando ninguna unidad puede ser despachada
+    if (unidades.length > 0 && cuenta("disponible") === 0) {
+        showPageNotice("warning", "No hay unidades disponibles", "Todas las unidades de Central Norte están en ruta, en atención o fuera de servicio. Los incidentes nuevos quedan Sin asignar hasta que una unidad se libere.");
+    }
     qsa("[data-updated]").forEach((el) => {
         el.textContent = `Actualizado a las ${clockTime()}`;
     });

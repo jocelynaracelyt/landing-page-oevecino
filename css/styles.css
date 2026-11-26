@@ -561,6 +561,12 @@ ol {
     color: var(--color-text-secondary);
 }
 
+.search-option--more strong {
+    font-size: 13px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
 .search-option:hover,
 .search-option.is-active {
     background-color: var(--color-sidebar);
@@ -4232,4 +4238,19 @@ a.map-chip:hover {
         transition: none !important;
         scroll-behavior: auto !important;
     }
+}
+
+/* Textos escritos por usuarios (comunicados, descripciones, actividad, búsqueda):
+   una palabra o enlace muy largo se parte en lugar de ensanchar la página. */
+.notice-card,
+.phone-preview,
+.post-card,
+.activity-card,
+.timeline-item,
+.search-option,
+.data-value,
+.banner-content,
+.priority-card-body,
+.ops-incident-card {
+    overflow-wrap: anywhere;
 }

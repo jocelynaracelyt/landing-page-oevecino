@@ -1,0 +1,10 @@
+{
+  "name": "oevecino-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OeVecino · Plataforma web de seguridad vecinal (Coordinador y Serenazgo). HTML, CSS y JavaScript sin frameworks.",
+  "scripts": {
+    "dev": "npx --yes http-server@14.1.1 . -p 5173 -c-1 -o /pages/",
+    "start": "npm run dev"
+  }
+}
