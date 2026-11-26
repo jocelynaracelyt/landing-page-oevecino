@@ -1,3 +1,4 @@
+
 name: Deploy OeVecino
 
 on:
@@ -17,23 +18,23 @@ concurrency:
 
 jobs:
   deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
 
     steps:
-      - name: Obtener el repositorio
+      - name: Obtener repositorio
         uses: actions/checkout@v4
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Preparar archivos del sitio
+      - name: Preparar archivos
         run: |
           mkdir -p _site
           cp -R assets css js pages _site/
-          if [ -f favicon.ico ]; then cp favicon.ico _site/; fi
+          cp favicon.ico _site/ 2>/dev/null || true
           cat > _site/index.html <<'EOF'
           <!DOCTYPE html>
           <html lang="es">
@@ -49,7 +50,7 @@ jobs:
           </html>
           EOF
 
-      - name: Subir archivos del sitio
+      - name: Subir artefacto de GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
