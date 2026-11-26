@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bandeja de incidentes · OeVecino</title>
+  <meta name="description" content="Bandeja de incidentes activos de Central Norte para Serenazgo.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="serenazgo-incidentes">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <!-- Página principal de la sección: sin ruta de navegación -->
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div class="page-title-row">
+            <div class="page-title">
+              <h1>Bandeja de incidentes</h1>
+              <p>Revisa los reportes de tu central y continúa su atención.</p>
+            </div>
+            <span class="badge badge--info" data-active-count>6 incidentes activos</span>
+          </div>
+
+          <!-- Aviso de nuevo incidente (S02 · Nuevo incidente) -->
+          <div class="banner-row" id="new-incident-banner" hidden>
+            <div class="banner" role="status">
+              <img src="../assets/icons/info.svg" alt="">
+              <div class="banner-content">
+                <p class="banner-title" id="new-incident-title">Nuevo incidente</p>
+                <p class="banner-text" id="new-incident-text"></p>
+              </div>
+            </div>
+            <a class="btn btn--primary" id="new-incident-link" href="serenazgo-seguimiento.html">Ver nuevo incidente</a>
+          </div>
+
+          <div data-page-notice hidden></div>
+
+          <form class="filters" role="search" aria-label="Filtrar incidentes">
+            <div class="filters-row filters-row--two">
+              <div class="form-field">
+                <label class="form-label" for="inbox-search">Buscar incidente</label>
+                <input class="input" type="search" id="inbox-search" placeholder="Busca por código o dirección">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="inbox-category">Categoría</label>
+                <select class="select" id="inbox-category">
+                  <option value="">Todas las categorías</option>
+                  <option value="sos">SOS</option>
+                  <option value="emergenciamedica">Emergencia médica</option>
+                  <option value="robo">Robo</option>
+                  <option value="actividadsospechosa">Actividad sospechosa</option>
+                  <option value="vehiculosospechoso">Vehículo sospechoso</option>
+                  <option value="accidentetransito">Accidente de tránsito</option>
+                  <option value="alumbradodefectuoso">Alumbrado defectuoso</option>
+                  <option value="otros">Otros</option>
+                </select>
+              </div>
+            </div>
+            <div class="filters-bar">
+              <div class="filters-bar-left">
+                <label class="chip-select chip-select--status chip-select--active">
+                  <span class="visually-hidden">Estado</span>
+                  <img src="../assets/icons/filtros.svg" alt="" class="chip-icon">
+                  <select id="inbox-status">
+                    <option value="">Todos los estados</option>
+                    <option value="sin-asignar">Sin asignar</option>
+                    <option value="despachado">Despachado</option>
+                    <option value="en-ruta">En ruta</option>
+                    <option value="en-atencion">En atención</option>
+                  </select>
+                  <img src="../assets/icons/chevron-filtro.svg" alt="" class="chip-arrow">
+                </label>
+                <label class="chip-select">
+                  <span class="visually-hidden">Fecha</span>
+                  <img src="../assets/icons/calendario-gris.svg" alt="" class="chip-icon">
+                  <select id="inbox-date">
+                    <option value="hoy">Hoy, 2 nov.</option>
+                  </select>
+                  <img src="../assets/icons/chevron-filtro.svg" alt="" class="chip-arrow">
+                </label>
+              </div>
+              <button type="button" class="sort-button" id="inbox-sort">Más recientes primero ↓</button>
+            </div>
+          </form>
+
+          <section class="stack-16" aria-labelledby="inbox-count">
+            <div class="results-summary" id="inbox-summary">
+              <h2 id="inbox-count" style="font-size:13px;font-weight:800">6 reportes · Central Norte</h2>
+              <span class="text-secondary" style="font-size:12px" id="inbox-updated">Actualizado a las 08:30</span>
+            </div>
+            <ul class="incident-cards" id="inbox-list"></ul>
+            <p class="note" id="inbox-footer"></p>
+          </section>
+
+          <!-- Estado: bandeja vacía -->
+          <section class="stack-16" id="inbox-empty" hidden>
+            <div class="empty-state">
+              <img src="../assets/icons/lupa-vacio.svg" alt="">
+              <h2>No hay incidentes activos</h2>
+              <p>Todos los reportes de Central Norte han sido atendidos. Los nuevos aparecerán aquí.</p>
+              <button type="button" class="btn btn--neutral" data-action="refresh-inbox">Actualizar bandeja</button>
+            </div>
+            <div class="banner banner--success">
+              <img src="../assets/icons/check-circulo-verde.svg" alt="">
+              <div class="banner-content">
+                <p class="banner-title">Central Norte está al día</p>
+                <p class="banner-text" id="inbox-empty-banner-text"></p>
+              </div>
+            </div>
+            <div class="card card--compact">
+              <h2 class="card-title card-title--small">Mantente disponible</h2>
+              <p class="card-text">Puedes consultar las unidades de Serenazgo desde el menú. Recibirás un aviso cuando ingrese un nuevo incidente.</p>
+            </div>
+          </section>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

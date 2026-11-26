@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Directorio vecinal · OeVecino</title>
+  <meta name="description" content="Directorio de vecinos verificados de Santa Aurora.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="coordinador-directorio">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <!-- Página principal de la sección: sin ruta de navegación -->
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div class="page-title">
+            <h1>Directorio vecinal</h1>
+            <p>Consulta los vecinos de Santa Aurora y abre su perfil de contacto.</p>
+          </div>
+
+          <form class="filters-row filters-row--search" role="search" aria-label="Buscar vecinos">
+            <div class="form-field">
+              <label class="form-label" for="neighbor-search">Buscar por nombre</label>
+              <input class="input" type="search" id="neighbor-search" placeholder="Escribe el nombre del vecino" autocomplete="off">
+            </div>
+            <button type="button" class="btn btn--text" id="clear-search">Limpiar búsqueda</button>
+          </form>
+
+          <section class="stack-16" aria-labelledby="neighbor-summary">
+            <h2 class="results-summary" id="neighbor-summary">6 vecinos · Orden alfabético</h2>
+            <ul class="neighbor-list" id="neighbor-list"></ul>
+            <p class="note" id="neighbor-footer"></p>
+          </section>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

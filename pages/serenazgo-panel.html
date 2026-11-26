@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Serenazgo · OeVecino</title>
+  <meta name="description" content="Panel operativo de Serenazgo: incidentes, unidades y mapa de Central Norte.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="serenazgo-panel">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <!-- Página principal de la sección: sin ruta de navegación -->
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div class="page-title-row">
+            <div class="page-title">
+              <h1>Panel de Serenazgo</h1>
+              <p>Toda la operación de Central Norte, en un solo lugar.</p>
+            </div>
+            <a class="btn btn--secondary" href="serenazgo-unidades.html">Ver unidades</a>
+          </div>
+
+          <section class="grid-4" aria-label="Indicadores de incidentes">
+            <article class="stat-card stat-card--small">
+              <h2>Incidentes activos</h2>
+              <p><strong class="stat-number" data-stat="activos"></strong><span data-stat="activos-detalle"></span></p>
+            </article>
+            <article class="stat-card stat-card--small">
+              <h2>Prioridad alta</h2>
+              <p><strong class="stat-number is-danger" data-stat="altas"></strong><span data-stat="altas-detalle"></span></p>
+            </article>
+            <article class="stat-card stat-card--small">
+              <h2>Casos atendidos hoy</h2>
+              <p><strong class="stat-number" data-stat="atendidos">18</strong>Desde las 06:00</p>
+            </article>
+            <article class="stat-card stat-card--small">
+              <h2>Tiempo medio de llegada</h2>
+              <p><strong class="stat-number">4 min</strong>Promedio del turno actual</p>
+            </article>
+          </section>
+
+          <section class="grid-4" aria-label="Indicadores de unidades">
+            <article class="stat-card stat-card--small">
+              <h2>Unidades disponibles</h2>
+              <p><strong class="stat-number" data-stat="disponibles"></strong><span data-stat="disponibles-detalle">Listas para despacho</span></p>
+            </article>
+            <article class="stat-card stat-card--small">
+              <h2>En ruta</h2>
+              <p><strong class="stat-number" data-stat="en-ruta"></strong><span data-stat="en-ruta-detalle">Hacia un incidente</span></p>
+            </article>
+            <article class="stat-card stat-card--small">
+              <h2>En atención</h2>
+              <p><strong class="stat-number" data-stat="en-atencion"></strong><span data-stat="en-atencion-detalle">En el lugar del reporte</span></p>
+            </article>
+            <article class="stat-card stat-card--small">
+              <h2>Fuera de servicio</h2>
+              <p><strong class="stat-number" data-stat="fuera"></strong><span data-stat="fuera-detalle">Mantenimiento programado</span></p>
+            </article>
+          </section>
+
+          <section class="dashboard-main">
+            <div class="column">
+              <div class="section-heading">
+                <h2 class="section-title">Mapa operativo</h2>
+                <span class="badge badge--info">En vivo</span>
+              </div>
+              <div class="map-card">
+                <div class="map-viewport map-viewport--ops" id="ops-map" role="region" aria-label="Mapa operativo de Santa Aurora Norte con incidentes, unidades y alertas"></div>
+                <div class="map-footer map-footer--legend">
+                  <span class="map-footer-item"><span class="legend-dot legend-dot--incident"></span>Incidentes</span>
+                  <span class="map-footer-item"><span class="legend-dot legend-dot--unit"></span>Unidades</span>
+                  <span class="map-footer-item"><span class="legend-dot legend-dot--alert"></span>Alertas</span>
+                  <span class="map-scale">250 m ━</span>
+                </div>
+              </div>
+              <p class="map-update"><img src="../assets/icons/actualizar.svg" alt=""><span data-map="actualizacion">Última actualización: 08:30:00 · GPS cada 15 segundos.</span></p>
+              <div class="banner banner--warning">
+                <img src="../assets/icons/advertencia.svg" alt="">
+                <div class="banner-content">
+                  <p class="banner-title">Alerta vial · Av. Central</p>
+                  <p class="banner-text">Desvío temporal por obras. Considera Jr. La Unión para el acceso al sector.</p>
+                </div>
+              </div>
+            </div>
+
+            <aside class="column" aria-labelledby="ser-priority-title">
+              <div class="section-heading section-heading--start">
+                <h2 class="section-title" id="ser-priority-title">Atención prioritaria</h2>
+                <span class="badge badge--alta">Alta</span>
+              </div>
+              <ul class="incident-cards" id="priority-list"></ul>
+            </aside>
+          </section>
+
+          <section class="column" aria-labelledby="others-title">
+            <div class="section-heading">
+              <h2 class="section-title" id="others-title">Otros incidentes</h2>
+              <a class="btn btn--text" href="serenazgo-incidentes.html">Ver bandeja de incidentes</a>
+            </div>
+            <ul class="grid-3" id="other-list"></ul>
+          </section>
+
+          <section class="column" aria-labelledby="ser-activity-title">
+            <h2 class="section-title" id="ser-activity-title">Actividad reciente</h2>
+            <ul class="grid-3" id="ser-activity"></ul>
+          </section>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

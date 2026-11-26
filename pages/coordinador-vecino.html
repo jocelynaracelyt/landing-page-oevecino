@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil vecinal · OeVecino</title>
+  <meta name="description" content="Perfil de contacto de un vecino verificado (solo lectura).">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="coordinador-vecino">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <nav class="breadcrumb" aria-label="Ruta de navegación"><ol><li><a href="coordinador-directorio.html">Directorio</a></li><li aria-current="page">Perfil vecinal</li></ol></nav>
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div class="page-title">
+            <h1>Perfil vecinal</h1>
+            <p>Información de contacto de solo lectura para la coordinación vecinal.</p>
+          </div>
+
+          <div><a class="btn btn--text" href="coordinador-directorio.html">← Volver al directorio</a></div>
+
+          <div class="profile-layout">
+            <section class="identity-card" aria-labelledby="neighbor-name">
+              <div class="identity-top">
+                <span class="identity-avatar" data-neighbor="initials" aria-hidden="true">LV</span>
+                <h2 id="neighbor-name" data-neighbor="name">Lucía Vargas</h2>
+                <p data-neighbor="sector">Sector Norte</p>
+                <span class="badge badge--role-blue">Vecino</span>
+              </div>
+              <div class="data-item">
+                <span class="data-label">Estado de la cuenta</span>
+                <span class="data-value data-value--large">Activa</span>
+              </div>
+            </section>
+
+            <section class="card" aria-labelledby="neighbor-data-title">
+              <h2 class="card-title" id="neighbor-data-title">Datos del vecino</h2>
+              <span class="verified">Vecino verificado <img src="../assets/icons/verificado.svg" alt="Verificado"></span>
+              <div class="data-grid data-grid--two">
+                <div class="data-item data-item--full"><span class="data-label">Nombre completo</span><span class="data-value data-value--large" data-neighbor="fullname">Lucía Vargas</span></div>
+                <div class="data-item"><span class="data-label">Celular</span><span class="data-value data-value--large" data-neighbor="phone">944 238 670</span></div>
+                <div class="data-item"><span class="data-label">Distrito</span><span class="data-value data-value--large">Santa Aurora</span></div>
+              </div>
+            </section>
+          </div>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

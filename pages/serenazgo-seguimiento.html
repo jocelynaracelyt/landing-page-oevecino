@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seguimiento de incidente · OeVecino</title>
+  <meta name="description" content="Seguimiento de un incidente: estado de la atención, unidad asignada, mapa y cronología.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="serenazgo-seguimiento">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <nav class="breadcrumb" aria-label="Ruta de navegación"><ol><li><a href="serenazgo-incidentes.html">Incidentes</a></li><li aria-current="page">Seguimiento</li></ol></nav>
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div id="tracking-detail" class="page-body">
+            <div class="back-row">
+              <a class="btn btn--text" href="serenazgo-incidentes.html">← Volver a incidentes</a>
+              <span data-track="status"></span>
+            </div>
+
+            <div class="page-title-row">
+              <div class="page-title">
+                <h1 data-track="title">Seguimiento</h1>
+                <p data-track="location"></p>
+              </div>
+              <div data-track="header-action"></div>
+            </div>
+
+            <div class="incident-meta" data-track="meta"></div>
+
+            <div class="stack-16" data-track="notices" aria-live="polite"></div>
+
+            <section class="stack-16" aria-labelledby="attention-title">
+              <h2 class="section-title" id="attention-title">Estado de la atención</h2>
+              <ol class="steps" data-track="steps"></ol>
+            </section>
+
+            <div class="two-columns">
+              <section class="column" aria-labelledby="map-title">
+                <div class="section-heading">
+                  <h2 class="section-title" id="map-title" data-track="map-title">Ubicación y recorrido GPS</h2>
+                  <span data-track="map-status"></span>
+                </div>
+                <div class="map-card">
+                  <div class="map-viewport map-viewport--ops" id="track-map" role="region" aria-label="Mapa con la ubicación del incidente y el recorrido de la unidad"></div>
+                  <div class="map-footer map-footer--legend">
+                    <span class="map-footer-item"><span class="legend-dot legend-dot--incident"></span>Incidentes</span>
+                    <span class="map-footer-item"><span class="legend-dot legend-dot--unit"></span>Unidades</span>
+                    <span class="map-footer-item"><span class="legend-dot legend-dot--alert"></span>Alertas</span>
+                    <span class="map-scale">250 m ━</span>
+                  </div>
+                </div>
+                <p class="note" data-track="map-note"></p>
+              </section>
+
+              <aside class="column" aria-labelledby="unit-title">
+                <h2 class="section-title" id="unit-title" data-track="unit-title">Unidad asignada</h2>
+                <div class="stack-16" data-track="unit"></div>
+              </aside>
+            </div>
+
+            <section class="card" data-track="result" aria-labelledby="result-title" hidden>
+              <h2 class="card-title" id="result-title">Resultado y calificación</h2>
+              <div class="result-grid" data-track="result-body"></div>
+            </section>
+
+            <div class="two-columns">
+              <section class="card" aria-labelledby="track-timeline-title">
+                <h2 class="card-title" id="track-timeline-title">Cronología</h2>
+                <ol class="timeline" data-track="timeline"></ol>
+              </section>
+              <aside class="column">
+                <section class="card" aria-labelledby="leader-title">
+                  <h2 class="card-title" id="leader-title">Última actualización del jefe de unidad</h2>
+                  <div class="stack-16" data-track="leader"></div>
+                </section>
+                <p class="note">Los cambios de estado quedan registrados con hora, responsable y origen.</p>
+              </aside>
+            </div>
+          </div>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ventana de asignación -->
+  <dialog class="modal" id="assign-dialog" aria-labelledby="assign-title">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-close-dialog aria-label="Cerrar ventana"><img src="../assets/icons/cerrar.svg" alt=""></button>
+      <div class="modal-header" style="gap:6px">
+        <h2 id="assign-title">Asignar unidad</h2>
+        <p class="modal-subtitle-strong" id="assign-incident"></p>
+        <p id="assign-address"></p>
+      </div>
+      <div class="modal-body" id="assign-body"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn--secondary" data-close-dialog>Cancelar</button>
+        <button type="button" class="btn btn--primary btn--placeholder" id="assign-confirm">Asignar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Ventana de cierre -->
+  <dialog class="modal" id="close-dialog" aria-labelledby="close-title">
+    <form class="modal-content" id="close-form" novalidate>
+      <button type="button" class="modal-close" data-close-dialog aria-label="Cerrar ventana"><img src="../assets/icons/cerrar.svg" alt=""></button>
+      <div class="modal-header" style="gap:4px">
+        <h2 id="close-title">Cerrar caso</h2>
+        <p id="close-subtitle-1"></p>
+        <p id="close-subtitle-2"></p>
+      </div>
+      <div class="modal-body">
+        <fieldset class="form-field" id="close-options-field" style="border:none">
+          <legend class="form-label">Resultado de atención *</legend>
+          <p class="note" style="margin:4px 0 10px">Selecciona un único resultado para cerrar el caso.</p>
+          <div class="option-list">
+            <label class="option-card check-option"><input type="radio" name="resultado" value="atendido"><span class="radio-dot"></span>Atendido</label>
+            <label class="option-card check-option"><input type="radio" name="resultado" value="falsa-alarma"><span class="radio-dot"></span>Falsa alarma</label>
+            <label class="option-card check-option"><input type="radio" name="resultado" value="derivado-pnp"><span class="radio-dot"></span>Derivado a la PNP</label>
+          </div>
+          <p class="form-error-summary" id="close-error" role="alert" style="font-size:13px;margin-top:8px" hidden>Selecciona un resultado para continuar.</p>
+        </fieldset>
+        <div class="form-field">
+          <label class="form-label" for="close-description">Descripción breve (opcional)</label>
+          <textarea class="textarea" id="close-description" rows="2" maxlength="400" placeholder="Describe brevemente la atención realizada"></textarea>
+        </div>
+        <p class="note" id="close-cancel-note">Cancelar mantiene el caso En ruta, sin guardar cambios.</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn--secondary" data-close-dialog>Cancelar</button>
+        <button type="submit" class="btn btn--primary">Confirmar</button>
+      </div>
+    </form>
+  </dialog>
+
+
+</body>
+
+</html>

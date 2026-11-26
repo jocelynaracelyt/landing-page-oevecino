@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moderación de publicaciones · OeVecino</title>
+  <meta name="description" content="Moderación de publicaciones vecinales de Red Vecinal.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="coordinador-moderacion">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <!-- Página principal de la sección: sin ruta de navegación -->
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div class="page-title">
+            <h1>Moderación de publicaciones</h1>
+            <p>Revisa el contenido de la comunidad antes de compartirlo en Red Vecinal.</p>
+          </div>
+
+          <nav class="tabs-row" aria-label="Secciones de Red Vecinal">
+            <a class="segment-link" href="coordinador-moderacion.html" aria-current="page">Moderación</a>
+            <a class="segment-link" href="coordinador-comunicados.html">Comunicados →</a>
+          </nav>
+
+          <section class="grid-3" aria-label="Resumen de moderación">
+            <article class="stat-card">
+              <h2>Pendientes de hoy</h2>
+              <p><strong class="stat-number" data-stat="hoy">2</strong><span data-stat="hoy-detalle"></span></p>
+            </article>
+            <article class="stat-card">
+              <h2>Reportes por revisar</h2>
+              <p><strong class="stat-number" data-stat="reportes">3</strong><span data-stat="reportes-detalle"></span></p>
+            </article>
+            <article class="stat-card">
+              <h2>Pendiente más antigua</h2>
+              <p><strong class="stat-number stat-number--text" data-stat="antigua"></strong><span data-stat="antigua-detalle" style="font-size:14px"></span></p>
+            </article>
+          </section>
+
+          <div class="banner">
+            <img src="../assets/icons/info.svg" alt="">
+            <div class="banner-content">
+              <p class="banner-title">Una Red Vecinal útil, respetuosa y segura</p>
+              <p class="banner-text">Protege los datos personales. Evita acusaciones e información no verificada; los reportes requieren revisión, no prueban una infracción.</p>
+            </div>
+          </div>
+
+          <div data-page-notice hidden></div>
+
+          <div class="status-tabs" role="group" aria-label="Filtrar publicaciones por estado">
+            <div class="status-tabs-group">
+              <button type="button" class="status-tab" aria-pressed="true" data-tab="todas" data-tab-count="todas">Todas (6)</button>
+              <button type="button" class="status-tab" aria-pressed="false" data-tab="pendiente" data-tab-count="pendiente">Pendientes (3)</button>
+            </div>
+            <div class="status-tabs-group">
+              <button type="button" class="status-tab" aria-pressed="false" data-tab="aprobada" data-tab-count="aprobada">Aprobadas (2)</button>
+              <button type="button" class="status-tab" aria-pressed="false" data-tab="oculta" data-tab-count="oculta">Ocultas (1)</button>
+            </div>
+          </div>
+
+          <form class="filters" role="search" aria-label="Buscar publicaciones">
+            <div class="filters-row filters-row--two">
+              <div class="form-field">
+                <label class="form-label" for="post-search">Buscar publicación</label>
+                <input class="input" type="search" id="post-search" placeholder="Busca por publicación, autor o ubicación">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="post-category">Categoría</label>
+                <select class="select" id="post-category">
+                  <option value="">Todas las categorías</option>
+                  <option value="robo">Robo</option>
+                  <option value="actividadsospechosa">Actividad sospechosa</option>
+                  <option value="vehiculosospechoso">Vehículo sospechoso</option>
+                  <option value="accidentetransito">Accidente de tránsito</option>
+                  <option value="alumbradodefectuoso">Alumbrado defectuoso</option>
+                  <option value="otros">Otros</option>
+                </select>
+              </div>
+            </div>
+            <div class="filters-bar">
+              <button type="button" class="sort-button" id="post-sort">Reportadas primero · Más recientes primero dentro de cada grupo ↓</button>
+              <button type="button" class="btn btn--text" id="clear-post-filters">Limpiar filtros</button>
+            </div>
+          </form>
+
+          <section class="stack-16" aria-labelledby="post-summary">
+            <h2 class="results-summary" id="post-summary">6 publicaciones</h2>
+            <ul class="post-list" id="post-list"></ul>
+            <p class="note" id="post-footer"></p>
+          </section>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ventana C07: Revisión de publicación -->
+  <dialog class="modal modal--wide" id="review-dialog" aria-labelledby="review-title">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-close-dialog aria-label="Cerrar ventana"><img src="../assets/icons/cerrar.svg" alt=""></button>
+      <div class="stack-16" id="review-content" style="gap:24px"></div>
+    </div>
+  </dialog>
+
+</body>
+
+</html>

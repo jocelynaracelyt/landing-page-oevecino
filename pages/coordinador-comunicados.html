@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comunicados · OeVecino</title>
+  <meta name="description" content="Comunicados de la junta vecinal publicados en Red Vecinal.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="coordinador-comunicados">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <!-- Página principal de la sección: sin ruta de navegación -->
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div class="page-title-row">
+            <div class="page-title">
+              <h1>Comunicados</h1>
+              <p>Comparte información de la junta vecinal con tu comunidad.</p>
+            </div>
+            <a class="btn btn--primary" href="coordinador-nuevo-comunicado.html">Nuevo comunicado</a>
+          </div>
+
+          <nav class="tabs-row" aria-label="Secciones de Red Vecinal">
+            <a class="segment-link" href="coordinador-moderacion.html">← Moderación</a>
+            <a class="segment-link" href="coordinador-comunicados.html" aria-current="page">Comunicados</a>
+          </nav>
+
+          <div data-page-notice hidden></div>
+
+          <section class="stack-16" aria-labelledby="notice-count">
+            <div class="results-summary" style="justify-content:flex-start;gap:24px 378px">
+              <h2 id="notice-count" style="font-size:14px;font-weight:800">3 comunicados publicados</h2>
+              <button type="button" class="sort-button" id="notice-sort" hidden>Más recientes primero ↓</button>
+            </div>
+            <ul class="notice-list" id="notice-list"></ul>
+            <p class="note" id="notice-footer"></p>
+          </section>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

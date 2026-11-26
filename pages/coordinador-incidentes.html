@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de incidentes · OeVecino</title>
+  <meta name="description" content="Lista de incidentes de Central Norte con búsqueda y filtros.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="coordinador-incidentes">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <!-- Página principal de la sección: sin ruta de navegación -->
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div class="page-title-row">
+            <div class="page-title">
+              <h1>Lista de incidentes</h1>
+              <p>Revisa, valida y da seguimiento a los reportes de Central Norte.</p>
+            </div>
+            <span class="badge badge--info" data-active-count>6 incidentes activos</span>
+          </div>
+
+          <!-- Filtros -->
+          <form class="filters" role="search" aria-label="Filtrar incidentes">
+            <div class="filters-row">
+              <div class="form-field">
+                <label class="form-label" for="incident-search">Buscar incidente</label>
+                <input class="input" type="search" id="incident-search" placeholder="Busca por código, dirección o reportante">
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="priority-filter">Prioridad</label>
+                <select class="select" id="priority-filter">
+                  <option value="">Todas las prioridades</option>
+                  <option value="alta">Alta</option>
+                  <option value="media">Media</option>
+                  <option value="baja">Baja</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="status-filter">Estado</label>
+                <select class="select" id="status-filter">
+                  <option value="">Todos los estados</option>
+                  <option value="no-derivado">No derivado</option>
+                  <option value="derivado">Derivado</option>
+                  <option value="resuelto">Resuelto</option>
+                  <option value="descartado">Descartado</option>
+                  <option value="cerrado">Cerrado</option>
+                </select>
+              </div>
+            </div>
+            <fieldset class="stack-12" style="border:none">
+              <legend class="form-label" style="margin-bottom:10px">Categoría</legend>
+              <div class="check-group">
+                <label class="check-option"><input type="checkbox" name="categoria" value="robo"><span class="check-box"><img src="../assets/icons/check.svg" alt=""></span>Robo</label>
+                <label class="check-option"><input type="checkbox" name="categoria" value="actividadsospechosa"><span class="check-box"><img src="../assets/icons/check.svg" alt=""></span>Actividad sospechosa</label>
+                <label class="check-option"><input type="checkbox" name="categoria" value="vehiculosospechoso"><span class="check-box"><img src="../assets/icons/check.svg" alt=""></span>Vehículo sospechoso</label>
+                <label class="check-option"><input type="checkbox" name="categoria" value="accidentetransito"><span class="check-box"><img src="../assets/icons/check.svg" alt=""></span>Accidente de tránsito</label>
+                <label class="check-option"><input type="checkbox" name="categoria" value="alumbradodefectuoso"><span class="check-box"><img src="../assets/icons/check.svg" alt=""></span>Alumbrado defectuoso</label>
+                <label class="check-option"><input type="checkbox" name="categoria" value="otros"><span class="check-box"><img src="../assets/icons/check.svg" alt=""></span>Otros</label>
+              </div>
+            </fieldset>
+            <div class="filters-bar">
+              <button type="button" class="btn btn--text" id="clear-filters">Limpiar filtros</button>
+              <button type="button" class="sort-button" id="sort-toggle">Más recientes primero ↓</button>
+            </div>
+          </form>
+
+          <!-- Tabla -->
+          <section class="stack-16" id="incident-table" aria-labelledby="table-title">
+            <div class="table-card">
+              <div class="table-card-header">
+                <h2 id="table-title">Incidentes de Central Norte</h2>
+                <p id="table-count">8 registros · 6 activos</p>
+              </div>
+              <div class="table-scroll">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="th-light" style="width:44px">Tipo</th>
+                      <th scope="col" style="width:192px">Categoría</th>
+                      <th scope="col" style="width:102px">Código</th>
+                      <th scope="col">Dirección</th>
+                      <th scope="col" style="width:92px">Prioridad</th>
+                      <th scope="col" style="width:117px">Estado</th>
+                      <th scope="col" style="width:62px" id="hour-header">Hora ↓</th>
+                      <th scope="col" style="width:36px"><span class="visually-hidden">Abrir</span></th>
+                    </tr>
+                  </thead>
+                  <tbody id="incident-rows"></tbody>
+                </table>
+              </div>
+              <div class="table-footer">
+                <span id="table-showing">Mostrando 1–8 de 8 incidentes</span>
+                <nav class="pagination" aria-label="Paginación">
+                  <button type="button" disabled aria-label="Página anterior"><img src="../assets/icons/chevron-izquierda-gris.svg" alt=""></button>
+                  <button type="button" aria-current="page">1</button>
+                  <button type="button" disabled aria-label="Página siguiente"><img src="../assets/icons/chevron-derecha-gris.svg" alt=""></button>
+                </nav>
+              </div>
+            </div>
+            <p class="note">Selecciona una fila para abrir el detalle del incidente. Resueltos y descartados no cuentan como activos.</p>
+          </section>
+
+          <!-- Estado sin resultados -->
+          <section class="stack-16" id="incident-empty" hidden>
+            <p class="results-summary" id="empty-summary">0 resultados · Los 6 incidentes activos se conservan</p>
+            <div id="empty-card"></div>
+            <p class="note">No se ha eliminado ningún reporte. Retira los filtros para volver a ver la lista completa.</p>
+          </section>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

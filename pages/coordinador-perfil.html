@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi perfil · OeVecino</title>
+  <meta name="description" content="Datos institucionales y asignación del Coordinador.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="coordinador-perfil">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <!-- Página principal de la sección: sin ruta de navegación -->
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div class="page-title-row">
+            <div class="page-title">
+              <h1>Mi perfil</h1>
+              <p>Consulta tus datos institucionales y tu asignación de trabajo.</p>
+            </div>
+            <span class="badge badge--success">Cuenta activa</span>
+          </div>
+
+          <div class="profile-layout">
+            <section class="identity-card" aria-labelledby="profile-name">
+              <div class="identity-top">
+                <span class="identity-avatar" aria-hidden="true">DS</span>
+                <h2 id="profile-name">Diego Salazar</h2>
+                <p>Coordinador de seguridad</p>
+                <span class="badge badge--role-blue">Coordinador</span>
+              </div>
+              <div class="identity-data">
+                <div class="data-item"><span class="data-label">Municipalidad</span><span class="data-value data-value--large">Santa Aurora</span></div>
+                <div class="data-item"><span class="data-label">Estado de la cuenta</span><span class="data-value data-value--large">Activa</span></div>
+                <p class="secure-tag"><img src="../assets/icons/escudo-verde.svg" alt="">Acceso institucional</p>
+              </div>
+            </section>
+
+            <div class="column" style="gap:20px">
+              <section class="card" aria-labelledby="institutional-title">
+                <div class="card-heading">
+                  <h2 class="card-title" id="institutional-title">Datos institucionales</h2>
+                  <img src="../assets/icons/usuario.svg" alt="">
+                </div>
+                <div class="data-grid data-grid--two">
+                  <div class="data-item"><span class="data-label">Nombre completo</span><span class="data-value data-value--large">Diego Salazar</span></div>
+                  <div class="data-item"><span class="data-label">Rol de acceso</span><span class="data-value data-value--large">Coordinador</span></div>
+                  <div class="data-item data-item--full"><span class="data-label">Correo institucional</span><span class="data-value data-value--large">dsalazar@municipalidad.gob.pe</span></div>
+                  <div class="data-item data-item--full"><span class="data-label">Municipalidad</span><span class="data-value data-value--large">Municipalidad de Santa Aurora</span></div>
+                </div>
+              </section>
+
+              <section class="card" aria-labelledby="assignment-title">
+                <div class="card-heading">
+                  <h2 class="card-title" id="assignment-title">Asignación operativa</h2>
+                  <span class="badge badge--success">En turno</span>
+                </div>
+                <div class="data-grid data-grid--two">
+                  <div class="data-item"><span class="data-label">Central asignada</span><span class="data-value data-value--large">Central Norte</span></div>
+                  <div class="data-item"><span class="data-label">Turno asignado</span><span class="data-value data-value--large">Mañana · 06:00–14:00</span></div>
+                </div>
+                <p class="inline-note"><img src="../assets/icons/escudo.svg" alt="">Coordinación de incidentes, alertas vecinales y comunicación municipal.</p>
+              </section>
+            </div>
+          </div>
+
+          <section class="session-card" aria-labelledby="session-title">
+            <span class="session-icon"><img src="../assets/icons/candado.svg" alt=""></span>
+            <div class="session-text">
+              <h2 id="session-title">Tu sesión es personal</h2>
+              <p>Al terminar tu jornada, cierra sesión para proteger la información.</p>
+            </div>
+            <button type="button" class="btn btn--danger" data-open-logout-page><img src="../assets/icons/cerrar-sesion-blanco.svg" alt="">Cerrar sesión</button>
+          </section>
+
+          <p class="inline-note"><img src="../assets/icons/info-gris.svg" alt="">Los datos de tu cuenta son administrados por la municipalidad. Si necesitas corregirlos, contacta al administrador.</p>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

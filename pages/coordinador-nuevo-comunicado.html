@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear comunicado · OeVecino</title>
+  <meta name="description" content="Formulario para crear un comunicado de la junta vecinal con vista previa en la app.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="coordinador-nuevo-comunicado">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <nav class="breadcrumb" aria-label="Ruta de navegación"><ol><li><a href="coordinador-comunicados.html">Comunicados</a></li><li aria-current="page">Crear comunicado</li></ol></nav>
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div class="page-title">
+            <h1>Crear comunicado</h1>
+            <p>Redacta el mensaje y revisa cómo lo verá tu comunidad.</p>
+          </div>
+
+          <div><a class="btn btn--text" href="coordinador-comunicados.html">← Volver a comunicados</a></div>
+
+          <div class="compose-layout">
+            <form class="compose-form" id="notice-form" novalidate>
+              <section class="card" aria-labelledby="compose-title">
+                <h2 class="card-title" id="compose-title">Datos del comunicado</h2>
+                <div class="form-field">
+                  <label class="form-label" for="notice-title">Título *</label>
+                  <input class="input" type="text" id="notice-title" maxlength="90" placeholder="Escribe el título" required style="font-weight:700">
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="notice-content">Contenido *</label>
+                  <textarea class="textarea" id="notice-content" rows="5" maxlength="1200" placeholder="Escribe el contenido" required></textarea>
+                </div>
+                <p class="note">Usa información útil y confirmada. No incluyas datos personales ni acusaciones.</p>
+              </section>
+
+              <section class="card card--compact" aria-labelledby="attribution-title">
+                <h2 class="card-title card-title--small" id="attribution-title">Atribución pública: Junta vecinal</h2>
+                <p class="card-text">Autor de gestión: Diego Salazar · Coordinador<br>Municipalidad de Santa Aurora</p>
+              </section>
+
+              <div class="compose-actions">
+                <a class="btn btn--secondary" href="coordinador-comunicados.html">Cancelar</a>
+                <button type="submit" class="btn btn--primary">Publicar</button>
+              </div>
+              <p class="note">Cancelar vuelve a Comunicados sin publicar. Si ocurre un error, el texto ingresado se conserva para reintentar.</p>
+            </form>
+
+            <aside class="stack-16" aria-labelledby="preview-title">
+              <h2 class="section-title" id="preview-title">Vista previa en la app</h2>
+              <div class="phone-preview" aria-live="polite">
+                <div class="phone-status">
+                  <span data-preview="time">09:00</span>
+                  <div><img src="../assets/icons/senal-movil.svg" alt=""><img src="../assets/icons/wifi.svg" alt=""><img src="../assets/icons/bateria.svg" alt=""></div>
+                </div>
+                <div class="phone-brand"><img src="../assets/icons/logo-login.svg" alt="">OeVecino</div>
+                <h3>Red Vecinal</h3>
+                <h4>Comunicados y publicaciones</h4>
+                <article class="phone-notice">
+                  <strong>Junta vecinal</strong>
+                  <span class="phone-notice-meta">Comunicado · Al publicarse</span>
+                  <h5 data-preview="title"></h5>
+                  <p data-preview="content"></p>
+                </article>
+              </div>
+              <p class="note note--small">Previsualización · El comunicado todavía no está publicado.</p>
+            </aside>
+          </div>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado de error al publicar (sin conexión) -->
+  <dialog class="modal modal--notice" id="publish-error-dialog" aria-labelledby="publish-error-title">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-close-dialog aria-label="Cerrar ventana"><img src="../assets/icons/cerrar.svg" alt=""></button>
+      <img src="../assets/icons/error-publicar.svg" alt="">
+      <h2 id="publish-error-title" class="card-title">No pudimos publicar el comunicado</h2>
+      <p style="text-align:left;font-size:15px">El título y el contenido se conservaron exactamente. Revisa tu conexión y vuelve a pulsar Publicar. El aviso aún no se ha añadido a Red Vecinal ni a la lista.</p>
+    </div>
+  </dialog>
+
+</body>
+
+</html>

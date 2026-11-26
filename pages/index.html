@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión · OeVecino</title>
+  <meta name="description" content="Portal del personal municipal de OeVecino: inicio de sesión para Coordinador y Serenazgo.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="login">
+  <div class="login-page">
+    <!-- Columna de presentación -->
+    <section class="login-hero" aria-label="Presentación de OeVecino">
+      <div class="login-brand">
+        <img src="../assets/icons/logo-login.svg" alt="" class="logo-icon">
+        <div>
+          <strong>OeVecino</strong>
+          <span>Seguridad vecinal</span>
+        </div>
+      </div>
+
+      <div class="login-hero-content">
+        <div class="login-hero-text">
+          <p class="eyebrow">Seguridad municipal</p>
+          <h2 class="login-hero-title">Más cerca del vecino.<br>Mejor conectados.</h2>
+          <p>Un espacio de trabajo para coordinar la atención y cuidar nuestra comunidad.</p>
+        </div>
+
+        <!-- Ilustración construida con CSS y los SVG originales de Figma -->
+        <div class="login-illustration" aria-hidden="true">
+          <img src="../assets/icons/ilustracion-manzana-grande.svg" alt="" style="left:24.8%;top:29.9%;width:57.2%">
+          <span class="illus-block" style="left:3.8%;top:6%;width:14.4%;height:14.1%"></span>
+          <span class="illus-block" style="left:28.6%;top:6%;width:27.8%;height:14.1%"></span>
+          <span class="illus-block" style="left:67.4%;top:6%;width:12.1%;height:14.1%"></span>
+          <span class="illus-block" style="left:4.2%;top:36.9%;width:14%;height:22.1%"></span>
+          <span class="illus-block illus-block--blue" style="left:28.4%;top:36.2%;width:13.6%;height:22.8%"></span>
+          <span class="illus-block" style="left:46.6%;top:36.6%;width:9.7%;height:23.2%"></span>
+          <span class="illus-block" style="left:67.4%;top:36.9%;width:12.3%;height:22.1%"></span>
+          <span class="illus-block" style="left:89.6%;top:36.9%;width:6.4%;height:22.1%"></span>
+          <span class="illus-block" style="left:29%;top:77.5%;width:27.8%;height:14.8%"></span>
+          <span class="illus-block" style="left:68%;top:77.5%;width:12.3%;height:14.8%"></span>
+          <span class="illus-block" style="left:4.7%;top:77.2%;width:14%;height:14.8%"></span>
+          <img src="../assets/icons/ilustracion-rutas.svg" alt="" style="left:22.7%;top:26.8%;width:62.3%">
+          <span class="illus-pin illus-pin--home" style="left:16.7%;top:17.1%"><img src="../assets/icons/casa.svg" alt=""></span>
+          <span class="illus-pin illus-pin--people" style="left:57.2%;top:59.1%"><img src="../assets/icons/vecinos.svg" alt=""></span>
+          <span class="illus-pin illus-pin--shield" style="left:79.4%;top:59.4%"><img src="../assets/icons/escudo-check.svg" alt=""></span>
+          <span class="illus-caption">Una comunidad conectada y protegida</span>
+        </div>
+
+        <ul class="login-features">
+          <li><img src="../assets/icons/check-circulo.svg" alt="">Atención cercana</li>
+          <li><img src="../assets/icons/check-circulo.svg" alt="">Trabajo coordinado</li>
+        </ul>
+      </div>
+
+      <p class="login-hero-footer">OeVecino · Gestión de seguridad vecinal</p>
+    </section>
+
+    <!-- Formulario de acceso -->
+    <main class="login-panel" id="contenido">
+      <div class="login-institution">
+        <span class="login-institution-icon"><img src="../assets/icons/municipalidad.svg" alt=""></span>
+        <div>
+          <strong>Municipalidad de Santa Aurora</strong>
+          <span>Gerencia de Seguridad Ciudadana</span>
+        </div>
+      </div>
+
+      <form class="login-form" id="login-form" novalidate>
+        <div class="login-form-header">
+          <p class="eyebrow">Portal del personal municipal</p>
+          <h1>Iniciar sesión</h1>
+          <p>Ingresa con tu cuenta institucional para acceder a tu espacio de trabajo.</p>
+        </div>
+
+        <p class="form-error-summary" id="login-summary" role="alert" hidden>Completa los campos para continuar.</p>
+
+        <div class="banner banner--error" id="login-alert" role="alert" tabindex="-1" hidden>
+          <img src="../assets/icons/error-circulo-grande.svg" alt="">
+          <div class="banner-content">
+            <p class="banner-title">Correo o contraseña incorrectos</p>
+            <p class="banner-text">Revisa tus datos e inténtalo de nuevo.</p>
+          </div>
+        </div>
+
+        <div class="login-fields">
+          <div class="form-field">
+            <label class="form-label" for="login-email">Correo institucional</label>
+            <div class="input-wrapper">
+              <input class="input" type="email" id="login-email" name="correo" placeholder="nombre@municipalidad.gob.pe" autocomplete="username" required>
+              <span class="input-icon" id="email-error-icon" hidden><img src="../assets/icons/error-circulo.svg" alt=""></span>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="login-password">Contraseña</label>
+            <div class="input-wrapper">
+              <input class="input" type="password" id="login-password" name="clave" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
+              <button type="button" class="input-action" id="toggle-password" aria-label="Mostrar contraseña" aria-pressed="false"><img src="../assets/icons/ojo-oculto.svg" alt=""></button>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--block"><img src="../assets/icons/flecha-derecha.svg" alt="">Iniciar sesión</button>
+
+        <p class="login-note"><img src="../assets/icons/candado-pequeno.svg" alt="">Acceso exclusivo para personal autorizado</p>
+      </form>
+
+      <div class="login-help">
+        <p class="text-secondary">¿Necesitas ayuda para ingresar?</p>
+        <a href="mailto:soporte@santaaurora.example.org?subject=Ayuda%20para%20ingresar%20a%20OeVecino">Contacta al administrador de tu municipalidad</a>
+        <small>OeVecino · Plataforma de seguridad municipal · 2026</small>
+      </div>
+    </main>
+  </div>
+</body>
+
+</html>

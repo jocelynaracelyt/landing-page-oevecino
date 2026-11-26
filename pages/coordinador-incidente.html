@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de incidente · OeVecino</title>
+  <meta name="description" content="Detalle de un incidente vecinal: datos, reportante, cronología y validaciones.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="coordinador-incidente">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <nav class="breadcrumb" aria-label="Ruta de navegación"><ol><li><a href="coordinador-incidentes.html">Incidentes</a></li><li aria-current="page">Detalle del incidente</li></ol></nav>
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div id="incident-detail" class="page-body">
+            <div class="back-row">
+              <a class="btn btn--text" href="coordinador-incidentes.html">← Volver a incidentes</a>
+              <span data-incident="status"></span>
+            </div>
+
+            <div class="page-title">
+              <h1 data-incident="title">Incidente</h1>
+              <p data-incident="location"></p>
+            </div>
+
+            <div class="incident-meta" data-incident="meta"></div>
+
+            <div data-page-notice hidden></div>
+            <div data-incident="notice" hidden></div>
+
+            <ol class="steps" data-incident="steps" aria-label="Avance de la atención" hidden></ol>
+
+            <div class="two-columns">
+              <section class="card" aria-labelledby="data-title">
+                <h2 class="card-title" id="data-title">Datos del incidente</h2>
+                <div class="data-grid">
+                  <div class="data-item"><span class="data-label">Categoría</span><span class="data-value" data-field="categoria"></span></div>
+                  <div class="data-item"><span class="data-label">Prioridad</span><span class="data-value" data-field="prioridad"></span></div>
+                  <div class="data-item"><span class="data-label">Estado</span><span class="data-value" data-field="estado"></span></div>
+                  <div class="data-item data-item--full"><span class="data-label">Dirección</span><span class="data-value" data-field="direccion"></span></div>
+                </div>
+                <div class="description-row">
+                  <div class="data-item">
+                    <span class="data-label">Descripción</span>
+                    <p class="data-text" data-field="descripcion"></p>
+                    <p class="photo-caption" data-field="sin-foto">Sin fotografía adjunta</p>
+                  </div>
+                  <figure class="photo-figure" data-field="foto" hidden>
+                    <img src="../assets/images/foto-reportante.png" alt="Foto adjunta por el vecino del poste de alumbrado">
+                    <figcaption>Foto adjunta · <a href="../assets/images/foto-reportante.png" target="_blank" rel="noopener">Ver imagen ↗</a></figcaption>
+                  </figure>
+                </div>
+              </section>
+
+              <aside class="column" aria-label="Datos del reportante">
+                <section class="card card--compact">
+                  <h2 class="card-title card-title--small">Datos del reportante</h2>
+                  <p class="card-text" data-field="reportante"></p>
+                </section>
+                <div class="banner">
+                  <img src="../assets/icons/info.svg" alt="">
+                  <div class="banner-content">
+                    <p class="banner-title">Identidad protegida</p>
+                    <p class="banner-text">Anónimo para los vecinos. Su identidad y datos de contacto son visibles para el Coordinador.</p>
+                  </div>
+                </div>
+              </aside>
+            </div>
+
+            <div class="two-columns">
+              <section class="card" aria-labelledby="timeline-title">
+                <h2 class="card-title" id="timeline-title">Cronología</h2>
+                <ol class="timeline" data-incident="timeline"></ol>
+              </section>
+              <aside class="column">
+                <section class="card" data-incident="validations" aria-labelledby="validations-title">
+                  <h2 class="card-title" id="validations-title">Validaciones vecinales</h2>
+                  <p class="validation-number" data-field="validaciones"></p>
+                  <p class="text-strong" data-field="validaciones-texto"></p>
+                  <p class="text-secondary" data-field="validaciones-ultima"></p>
+                  <p class="note">Las validaciones aportan contexto; no sustituyen la revisión del Coordinador.</p>
+                </section>
+                <p class="note" data-incident="rule">Puedes editar o derivar los casos de Alumbrado defectuoso u Otros que aún no fueron enviados a Serenazgo.</p>
+              </aside>
+            </div>
+          </div>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ventana: Editar registro -->
+  <dialog class="modal" id="edit-dialog" aria-labelledby="edit-title">
+    <form class="modal-content" id="edit-form" novalidate>
+      <button type="button" class="modal-close" data-close-dialog aria-label="Cerrar ventana"><img src="../assets/icons/cerrar.svg" alt=""></button>
+      <div class="modal-header">
+        <h2 id="edit-title">Editar registro</h2>
+        <p id="edit-subtitle"></p>
+      </div>
+      <div class="modal-body">
+        <div class="filters-row filters-row--two" style="grid-template-columns:1fr 1fr;gap:16px">
+          <div class="form-field">
+            <label class="form-label" for="edit-category">Categoría</label>
+            <select class="select" id="edit-category">
+              <option value="alumbradodefectuoso">Alumbrado defectuoso</option>
+              <option value="otros">Otros</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label" for="edit-priority">Prioridad</label>
+            <select class="select" id="edit-priority">
+              <option value="alta">Alta</option>
+              <option value="media">Media</option>
+              <option value="baja">Baja</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="edit-description">Descripción</label>
+          <textarea class="textarea" id="edit-description" rows="3" required></textarea>
+        </div>
+        <fieldset class="form-field" style="border:none">
+          <legend class="form-label" style="margin-bottom:10px">Estado al guardar</legend>
+          <div class="check-group" style="gap:12px 22px">
+            <label class="check-option"><input type="radio" name="estado-guardar" value="no-derivado" checked><span class="radio-dot"></span>No derivado</label>
+            <label class="check-option"><input type="radio" name="estado-guardar" value="resuelto"><span class="radio-dot"></span>Resuelto</label>
+            <label class="check-option"><input type="radio" name="estado-guardar" value="descartado"><span class="radio-dot"></span>Descartado</label>
+          </div>
+        </fieldset>
+        <p class="note">Cancelar vuelve al detalle sin modificar el registro.</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn--neutral" data-close-dialog>Cancelar</button>
+        <button type="submit" class="btn btn--primary">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Ventana: Derivar a Serenazgo -->
+  <dialog class="modal" id="derive-dialog" aria-labelledby="derive-title">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-close-dialog aria-label="Cerrar ventana"><img src="../assets/icons/cerrar.svg" alt=""></button>
+      <div class="modal-header">
+        <h2 id="derive-title">Derivar a Serenazgo</h2>
+        <p id="derive-subtitle"></p>
+      </div>
+      <dl class="modal-body" style="gap:16px">
+        <div class="stack-8" style="gap:2px"><dt class="modal-section-title">Categoría</dt><dd class="text-secondary" id="derive-category"></dd></div>
+        <div class="stack-8" style="gap:2px"><dt class="modal-section-title">Dirección</dt><dd class="text-secondary" id="derive-address"></dd></div>
+        <div class="stack-8" style="gap:2px"><dt class="modal-section-title">Descripción</dt><dd class="text-secondary" id="derive-description"></dd></div>
+      </dl>
+      <p class="note">Cancelar vuelve al detalle sin modificar el registro.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn--neutral" data-close-dialog>Cancelar</button>
+        <button type="button" class="btn btn--primary" id="derive-confirm">Confirmar</button>
+      </div>
+    </div>
+  </dialog>
+
+</body>
+
+</html>

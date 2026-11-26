@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unidades de Serenazgo · OeVecino</title>
+  <meta name="description" content="Disponibilidad y asignación de las unidades de Serenazgo de Central Norte.">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="../js/main.js" defer></script>
+</head>
+
+<body data-page="serenazgo-unidades">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <div class="app-layout">
+    <!-- Menú lateral (se genera en js/main.js según el rol) -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú principal"></aside>
+
+    <div class="main-content">
+      <!-- Barra superior (buscador, notificaciones y cuenta) -->
+      <header class="topbar" id="topbar"></header>
+
+      <div class="page">
+        <main class="page-body" id="contenido">
+          <div class="page-info">
+            <!-- Página principal de la sección: sin ruta de navegación -->
+            <p class="date-time" data-component="datetime"></p>
+          </div>
+          <div class="page-title">
+            <h1>Unidades de Serenazgo</h1>
+            <p>Consulta la disponibilidad y la asignación de las unidades de Central Norte.</p>
+          </div>
+
+          <section class="grid-4" aria-label="Resumen de unidades">
+            <article class="stat-card stat-card--small"><h2>Disponibles</h2><p><strong class="stat-number" data-stat="disponible">3</strong>Listas para despacho</p></article>
+            <article class="stat-card stat-card--small"><h2>En ruta</h2><p><strong class="stat-number" data-stat="en-ruta">2</strong>En desplazamiento</p></article>
+            <article class="stat-card stat-card--small"><h2>En atención</h2><p><strong class="stat-number" data-stat="en-atencion">2</strong>En el lugar del reporte</p></article>
+            <article class="stat-card stat-card--small"><h2>Fuera de servicio</h2><p><strong class="stat-number" data-stat="fuera-servicio">1</strong>No disponibles para despacho</p></article>
+          </section>
+
+          <div data-page-notice hidden></div>
+
+          <form class="filters-row filters-row--two" role="search" aria-label="Filtrar unidades">
+            <div class="form-field">
+              <label class="form-label" for="unit-search">Buscar unidad</label>
+              <input class="input" type="search" id="unit-search" placeholder="Busca por código, placa o tripulante">
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="unit-status">Estado</label>
+              <select class="select" id="unit-status">
+                <option value="">Todos los estados</option>
+                <option value="disponible">Disponible</option>
+                <option value="en-ruta">En ruta</option>
+                <option value="en-atencion">En atención</option>
+                <option value="fuera-servicio">Fuera de servicio</option>
+              </select>
+            </div>
+          </form>
+
+          <section class="stack-16" aria-labelledby="unit-count">
+            <div class="results-summary">
+              <h2 id="unit-count" style="font-size:13px;font-weight:800">8 unidades · Central Norte</h2>
+              <span class="text-secondary" style="font-size:12px" data-updated>Actualizado a las 08:30</span>
+            </div>
+
+            <div class="table-card" id="unit-table">
+              <div class="table-card-header">
+                <h2>Unidades de Central Norte</h2>
+                <p id="unit-records">8 registros</p>
+              </div>
+              <div class="table-scroll">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width:96px">Código</th>
+                      <th scope="col" style="width:154px">Estado</th>
+                      <th scope="col">Tripulación</th>
+                      <th scope="col" style="width:136px">Turno</th>
+                      <th scope="col" style="width:92px">Placa</th>
+                      <th scope="col" style="width:172px">Incidente asignado</th>
+                      <th scope="col" style="width:120px">Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody id="unit-rows"></tbody>
+                </table>
+              </div>
+              <div class="table-footer">
+                <span id="unit-showing">Mostrando 1–8 de 8 unidades</span>
+                <nav class="pagination" aria-label="Paginación">
+                  <button type="button" disabled aria-label="Página anterior"><img src="../assets/icons/paginacion-anterior.svg" alt=""></button>
+                  <button type="button" aria-current="page">1</button>
+                  <button type="button" disabled aria-label="Página siguiente"><img src="../assets/icons/paginacion-siguiente.svg" alt=""></button>
+                </nav>
+              </div>
+            </div>
+            <div id="unit-empty" hidden></div>
+            <p class="note" id="unit-footer"></p>
+          </section>
+        </main>
+        <footer class="site-footer" data-component="footer"></footer>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
